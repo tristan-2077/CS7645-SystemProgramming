@@ -2,12 +2,30 @@
 #include<string.h>
 #include<stdio.h>
 
-void swap(int* x, int* y){
-	int tmp;
-	tmp = *x;
-	*x = *y;
-	*y = tmp;
+typedef struct Person
+{
 
+	char firstName[20];
+	char lastName[20];
+} Person;
+// typedef
+
+
+
+void swapIntegers(int* px, int* py){
+	int tmp;
+	tmp = *px;
+	*px = *py;
+	*py = tmp;
+
+}
+
+
+void swapPersons(Person* px, Person* py){
+	Person tmp;
+	tmp = *px;
+	*px = *py;
+	*py = tmp;
 }
 
 int main(int argc, char* argv[]){
@@ -21,7 +39,13 @@ int main(int argc, char* argv[]){
 	int y = atoi(argv[2]);
 
 	printf("Before swap: %d %d\n", x, y);
-	swap(&x, &y);
+	swapIntegers(&x, &y);
 	printf("After swap: %d %d\n", x, y);
+	
+	Person p1 = {"Jack", "Ali"};
+	Person p2 = {"Tom", "H"};
+	printf("Before swap p1:%s,%s, p2: %s,%s\n", p1.firstName, p1.lastName, p2.firstName, p2.lastName);	
+ 	swapPersons(&p1, &p2);	
+	printf("After swap p1:%s,%s, p2: %s,%s\n", p1.firstName, p1.lastName, p2.firstName, p2.lastName);	
 	exit(0);
 }
