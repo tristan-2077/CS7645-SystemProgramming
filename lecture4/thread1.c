@@ -10,9 +10,11 @@
 
 // volatile means that the variable can be changed by other threads
 //
+//race condition occurs when two threads try to access the same variable
 volatile int count = 0;
 
-
+// declare a mutex
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 void* threadFunction(void *input)
@@ -24,6 +26,12 @@ void* threadFunction(void *input)
 		
 			printf("I am the child thread\n");
 		*/
+
+
+	
+		// mutex is a lock that can be locked and unlocked
+
+		int status;
 		if(input == NULL)
 		{
 				printf("Input is NULL\n");
@@ -35,8 +43,24 @@ void* threadFunction(void *input)
 		int numIncrements = *pointerToInt;
 		for(int index = 0; index < numIncrements; index++)
 		{
+				status = pthread_mutex_lock(&mutex);
+				if(status != 0)
+				{
+						printf("Error in locking mutex\n");
+						exit(1);
+				}
+		
 				count++;
+				// mutex unlock
+				status = pthread_mutex_unlock(&mutex);
+				if(status != 0)
+				{
+						printf("Error in unlocking mutex\n");
+						exit(1);
+				}
+
 		}
+
 
 		pthread_exit(NULL);
 }	
@@ -44,10 +68,10 @@ void* threadFunction(void *input)
 
 int main()
 {
-		pthread_t thread;
+		pthread_t thread1, thread2;
 		int status;
-		void* result;
-		int cnt = 10;
+		void *result1, *result2;
+		int cnt = 100000000;
 		printf("Parent is about to create a child thread\n");
 
 		/*
@@ -58,20 +82,35 @@ int main()
 		 * 4. thread function arguments (NULL if no arguments)
 		 */
 
-		status = pthread_create(&thread, NULL, threadFunction, &cnt);
+		status = pthread_create(&thread1, NULL, threadFunction, (void*)&cnt);
 		if(status != 0)
 		{
 				printf("Error in creating thread\n");
 				exit(1);
 		}	
+		
+		status = pthread_create(&thread2, NULL, threadFunction, (void*)&cnt);
+		if(status != 0)
+		{
+				printf("Error in creating thread\n");
+				exit(1);
+		}
 
 		// wait for the child thread to finish
-		status = pthread_join(thread, &result);
+		status = pthread_join(thread1, &result1);
 		if(status != 0)
 		{
 				printf("Error in joining thread\n");
 				exit(1);
 		}	
+		// wait for the child thread to finish
+		status = pthread_join(thread2, &result2);
+		if(status != 0)
+		{
+				printf("Error in joining thread\n");
+				exit(1);
+		}
+
 
 		printf("Child thread has finished\n");
 
