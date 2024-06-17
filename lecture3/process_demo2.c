@@ -48,8 +48,13 @@ int main(){
 			
 			// use execve
 			//sleep(2);
-			execl("/bin/ls", "ls", "-l", NULL);
+			execlp("/bin/ls", "ls", "-l", NULL);
+			// Code should NEVER reach here
+
+			printf("Error running execv\n");
 			_exit(0);
+
+
 		default:
 			printf("I am the parent%d , my child is %d\n", getpid(), child_pid);
 
