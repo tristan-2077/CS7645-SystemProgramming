@@ -1,7 +1,8 @@
 /* demo of producer-consumer problem without condition variable 
  * 1. number of units can not exceed MAX_BUFFER_SIZE
  * 2. number of units can not be negative
- *
+ *  problem: is busy waiting!
+ *  solution: use condition variable!!!!
  * */
 #include <stdio.h>
 #include <stdlib.h>
