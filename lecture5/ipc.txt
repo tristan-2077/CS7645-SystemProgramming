@@ -1,0 +1,23 @@
+Interprocess Communication(IPC) Mechanisms
+
+1. IPC between processes on the same machine
+   IPC through kernel memorty
+        
+		Pipes
+		FIFO
+		POSIX message queues
+		UNIX domain sockets
+
+   IPC through user memory
+   		POSIX Shared Memory with POSIX semaphores
+
+2. IPC between processes on different machines
+
+		Internet Domain Socket(TCP and UDP)
+
+----------------------------------------------------------------------------------------------------------------------------
+
+PIPE can only be used between parent and child process. It can't be used between two independent processes.
+
+FIFO can be used between two independent processes.
+
