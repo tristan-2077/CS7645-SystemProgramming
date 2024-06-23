@@ -43,6 +43,10 @@ int main() {
                                       // write message to pipe
                                       //
     write(fd[1], msg, sizeof(msg));
+	//close write
+	close(fd[1]);
+    break;
+
   }
     return 0;
   }
